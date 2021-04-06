@@ -1,0 +1,7 @@
+{
+  "name": "whatsapp-2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/PlengNakdee/chat-app.git",
+  "license": "MIT"
+}
