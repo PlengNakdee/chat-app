@@ -3,5 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "repository": "https://github.com/PlengNakdee/chat-app.git",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "timeago-react": "^3.0.2"
+  }
 }

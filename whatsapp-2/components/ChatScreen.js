@@ -12,6 +12,7 @@ import { useState } from "react";
 import firebase from "firebase";
 import Message from "./Message";
 import getRecipientEmail from "../utils/getRecipientEmail.js";
+import TimeAgo from "timeago-react";
 
 function ChatScreen({ chat, messages }) {
   const [user] = useAuthState(auth);
@@ -61,14 +62,35 @@ function ChatScreen({ chat, messages }) {
   };
 
   const recipientEmail = getRecipientEmail(chat.users, user);
+  const [recipientSnapShot] = useCollection(
+    db
+      .collection("users")
+      .where("email", "==", getRecipientEmail(chat.users, user))
+  );
+  const recipient = recipientSnapShot?.docs?.[0]?.data();
 
   return (
     <Container>
       <Header>
-        <Avatar />
+        {recipient ? (
+          <Avatar src={recipient?.photoURL} />
+        ) : (
+          <Avatar>{recipientEmail[0]}</Avatar>
+        )}
         <HeaaderInformation>
           <h3>{recipientEmail}</h3>
-          <p>Last seen...</p>
+          {recipientSnapShot ? (
+            <p>
+              Last active:{" "}
+              {recipient?.lastSeen?.toDate() ? (
+                <TimeAgo datetime={recipient?.lastSeen?.toDate()} />
+              ) : (
+                "unavailable"
+              )}
+            </p>
+          ) : (
+            <p>Loading last active...</p>
+          )}
         </HeaaderInformation>
         <HeaderIcon>
           <IconButton>
